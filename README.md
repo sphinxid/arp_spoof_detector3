@@ -40,4 +40,26 @@ Tabel Alamat MAC saat ini:
 192.168.50.201 -> 28:c1:3c:ef:c7:e2
 ```
 
+Example output if there is a mac poisoning attack:
+
+```
+
+[+] Terdeteksi ARP poisoning dari IP: 192.168.50.1. MAC seharusnya: a0:36:bc:6e:c8:d8, tapi dideteksi MAC: f4:d4:88:8d:a9:a0
+[+] Terdeteksi ARP poisoning dari IP: 192.168.50.91. MAC seharusnya: d0:88:0c:77:2f:0a, tapi dideteksi MAC: f4:d4:88:8d:a9:a0
+[+] Terdeteksi ARP poisoning dari IP: 192.168.50.1. MAC seharusnya: a0:36:bc:6e:c8:d8, tapi dideteksi MAC: f4:d4:88:8d:a9:a0
+[+] Terdeteksi ARP poisoning dari IP: 192.168.50.91. MAC seharusnya: d0:88:0c:77:2f:0a, tapi dideteksi MAC: f4:d4:88:8d:a9:a0
+[+] Terdeteksi ARP poisoning dari IP: 192.168.50.1. MAC seharusnya: a0:36:bc:6e:c8:d8, tapi dideteksi MAC: f4:d4:88:8d:a9:a0
+[+] Terdeteksi ARP poisoning dari IP: 192.168.50.91. MAC seharusnya: d0:88:0c:77:2f:0a, tapi dideteksi MAC: f4:d4:88:8d:a9:a0
+[+] Terdeteksi ARP poisoning dari IP: 192.168.50.1. MAC seharusnya: a0:36:bc:6e:c8:d8, tapi dideteksi MAC: f4:d4:88:8d:a9:a0
+[+] Terdeteksi ARP poisoning dari IP: 192.168.50.91. MAC seharusnya: d0:88:0c:77:2f:0a, tapi dideteksi MAC: f4:d4:88:8d:a9:a0
+[+] Terdeteksi ARP poisoning dari IP: 192.168.50.1. MAC seharusnya: a0:36:bc:6e:c8:d8, tapi dideteksi MAC: f4:d4:88:8d:a9:a0
+[+] Terdeteksi ARP poisoning dari IP: 192.168.50.91. MAC seharusnya: d0:88:0c:77:2f:0a, tapi dideteksi MAC: f4:d4:88:8d:a9:a0
+
+```
+
+The attack is generated using [arpspoof3](https://github.com/sphinxid/arpspoof3)
+```
+sudo python3.11 arpspoof3.py -i en0 -t 192.168.50.91 -g 192.168.50.1
+```
+
 To exit you can use Ctrl+C
