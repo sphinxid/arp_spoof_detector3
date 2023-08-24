@@ -98,34 +98,51 @@ def create_arp_request_packet(source_mac, target_ip, local_ip):
     return eth_header + arp_header
 
 def deteksi_arp_poisoning(interface):
+    # Membuka interface untuk menangkap paket yang melewati interface
     capture = pcapy.open_live(interface, 65536, 1, 0)
-    global macs
+    global macs  # Menggunakan variabel global 'macs' untuk menyimpan alamat MAC
 
     while True:
         try:
+            # Mencoba membaca satu paket pada setiap iterasi
             (header, packet) = capture.next()
+            
+            # Mengekstrak tipe Ethernet dari paket
             ethertype = struct.unpack('!H', packet[12:14])[0]
 
+            # Jika tipe Ethernet adalah ARP (Address Resolution Protocol)
             if ethertype == ETHERTYPE_ARP:
+                # Mengambil header ARP dari paket
                 arp_header = packet[14:42]
 
+                # Mengekstrak beberapa informasi dari header ARP
                 _, _, _, _, opcode = struct.unpack('!HHBBH', arp_header[:8])
 
+                # Jika operasi ARP adalah balasan (REPLY)
                 if opcode == ARP_REPLY:
+                    # Mengekstrak alamat MAC dan IP pengirim
                     sender_mac = struct.unpack('!6B', arp_header[8:14])
                     sender_ip = struct.unpack('!4B', arp_header[14:18])
 
+                    # Mengkonversi alamat MAC dan IP menjadi format string
                     sender_mac_str = ':'.join('{:02x}'.format(b) for b in sender_mac)
                     sender_ip_str = '.'.join(str(b) for b in sender_ip)
 
+                    # Menggunakan lock untuk menjamin keselamatan akses variabel bersama
                     lock.acquire()
+                    
+                    # Jika IP pengirim sudah ada di tabel 'macs'
                     if sender_ip_str in macs:
+                        # Jika MAC di tabel tidak sesuai dengan MAC yang dideteksi
                         if macs[sender_ip_str] != sender_mac_str:
                             print(f"[+] Terdeteksi ARP poisoning dari IP: {sender_ip_str}. MAC seharusnya: {macs[sender_ip_str]}, tapi dideteksi MAC: {sender_mac_str}")
                     else:
+                        # Jika IP belum ada di tabel, tambahkan ke tabel 'macs'
                         macs[sender_ip_str] = sender_mac_str
-                    lock.release()
+                        
+                    lock.release()  # Lepaskan lock setelah selesai
 
+        # Jika pengguna menekan Ctrl+C, program akan menampilkan tabel MAC dan berhenti
         except KeyboardInterrupt:
             tampilkan_tabel_mac()
             print("[-] Deteksi dihentikan")
