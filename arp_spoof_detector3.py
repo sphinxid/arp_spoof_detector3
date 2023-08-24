@@ -73,7 +73,7 @@ def jadwalkan_arp_scan(interface):
     threading.Timer(60, jadwalkan_arp_scan, args=[interface]).start()
 
 def create_arp_request_packet(source_mac, target_ip, local_ip):
-    """Buat paket ARP request untuk IP target."""
+    # Buat paket ARP request untuk IP target.
     # Asumsi untuk alamat MAC yang akan diterima oleh semua komputer di jaringan
     broadcast_mac = b'\xff\xff\xff\xff\xff\xff'  # ff:ff:ff:ff:ff:ff dalam format byte
 
