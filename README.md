@@ -2,7 +2,7 @@
 arp_spoof_detector3.py - Python 3 arp spoof/poisoning detector that updates the table list every 10 seconds.
 
 ## Dependencies
-You will need pcapy-ng and Python 3.
+You will need pcapy-ng, netifaces, socket and Python 3.
 
 ## Usage
 
