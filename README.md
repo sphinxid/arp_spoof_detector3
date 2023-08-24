@@ -1,5 +1,5 @@
 # arp_spoof_detector3
-arp_spoof_detector3.py - Python 3 arp spoof/poisoning detector that updates the table list every 10 seconds.
+arp_spoof_detector3.py - Python 3 arp spoof/poisoning detector by looking for inconsistency in the mac-ip mapping tables. It also sends an ARP ping every minute to the whole network in the interface so it will populate the ARP table faster.
 
 ## Dependencies
 You will need pcapy-ng, netifaces, socket and Python 3.
